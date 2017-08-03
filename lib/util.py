@@ -273,9 +273,14 @@ def format_satoshis(x, is_diff=False, num_zeros = 0, decimal_point = 8, whitespa
     fract_part = fract_part.rstrip('0')
     if len(fract_part) < num_zeros:
         fract_part += "0" * (num_zeros - len(fract_part))
-    result = integer_part + dp + fract_part
+    if not fract_part:
+        result = integer_part
+        addendum = 1
+    else:
+        result = integer_part + dp + fract_part
+        addendum = 0
     if whitespaces:
-        result += " " * (decimal_point - len(fract_part))
+        result += " " * (decimal_point - len(fract_part) + addendum)
         result = " " * (15 - len(result)) + result
     return result.decode('utf8')
 
